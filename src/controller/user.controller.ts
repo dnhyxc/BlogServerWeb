@@ -1,6 +1,6 @@
 import userServer from "../service/user.service";
 
-const { createUser } = userServer;
+const { createUser, findUser } = userServer;
 class UserController {
   async register(ctx, next) {
     const { username, password } = ctx.request.body;
@@ -11,8 +11,11 @@ class UserController {
   }
 
   async login(ctx, next) {
-    console.log(ctx.request.body, "body");
-    ctx.body = "登录成功";
+    const { username, password } = ctx.request.body;
+
+    const res = await findUser({ username, password });
+
+    ctx.body = res;
   }
 }
 
