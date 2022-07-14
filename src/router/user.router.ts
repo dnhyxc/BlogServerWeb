@@ -1,14 +1,14 @@
 import Router from "koa-router";
 import userController from "../controller/user.controller";
 
-const userRouter = new Router({ prefix: "/user" });
+const router = new Router({ prefix: "/user" });
 
 const { register, login } = userController;
 
 // 注册接口
-userRouter.post("/register", register);
+router.post("/register", register);
 
 // 登录接口
-userRouter.post("/login", login);
+router.post("/login", login);
 
-export default userRouter;
+module.exports = router;
