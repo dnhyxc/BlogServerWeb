@@ -1,25 +1,9 @@
 import { User } from "../models";
 
-/**
- * , (err, docs) => {
-      if (!err) {
-        if (!password || !username) {
-          console.log(docs, "docs");
-          return "用户名或密码不能为空";
-        }
-        if (docs.username === username) {
-          console.log(docs.username, "docs");
-          return "当前用户名已存在";
-        }
-        console.log("sssssssssssssss");
-        User.create({ username, password });
-      }
-    }
- */
 class UserServer {
+  // 注册用户
   async createUser({ username, password }) {
     const user = await User.findOne({ username });
-    console.log(user, "user");
     if (!username || !password) {
       return {
         code: 1001,
@@ -39,11 +23,32 @@ class UserServer {
         msg: "注册成功",
         id: res.id,
       };
+    } else {
+      return {
+        code: 1003,
+        msg: "注册失败",
+        id: res.id,
+      };
     }
   }
+
+  // 用户登录
   async findUser({ username, password }) {
-    // 写入数据库
-    return "用户登录成功，用户名称：" + username + " 密码：" + password;
+    const filter = {
+      $and: [{ username }, { password }],
+    };
+    const user = await User.findOne(filter);
+    if (user?.id) {
+      return {
+        code: 200,
+        msg: "登录成功",
+      };
+    } else {
+      return {
+        code: 1004,
+        msg: "登录失败",
+      };
+    }
   }
 }
 
