@@ -1,4 +1,5 @@
 import { createUserServer, loginServer } from "../service";
+import { userRegisterError, userLoginError } from "../constant";
 
 class UserController {
   async registerCtr(ctx, next) {
@@ -11,11 +12,7 @@ class UserController {
         id: res?.id,
       };
     } catch (error) {
-      ctx.body = {
-        code: 409,
-        msg: "注册失败",
-        error,
-      };
+      ctx.app.emit("error", userRegisterError, ctx);
     }
   }
 
@@ -29,11 +26,7 @@ class UserController {
         result: res?.id,
       };
     } catch (error) {
-      ctx.body = {
-        code: 500,
-        message: "登录失败",
-        result: "",
-      };
+      ctx.app.emit("error", userLoginError, ctx);
     }
   }
 }

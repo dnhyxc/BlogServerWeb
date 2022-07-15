@@ -16,4 +16,15 @@ const userRegisterError = {
   result: "",
 };
 
-export { userFormateError, userAlreadyExited, userRegisterError };
+const userLoginError = {
+  code: "10004",
+  message: "用户登录错误",
+  result: "",
+};
+
+export {
+  userFormateError,
+  userAlreadyExited,
+  userRegisterError,
+  userLoginError,
+};

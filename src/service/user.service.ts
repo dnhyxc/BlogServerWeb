@@ -1,8 +1,14 @@
+import { FilterQuery } from "mongoose";
 import { User } from "../models";
+
+type FilterParams = FilterQuery<{
+  username: string;
+  password?: string | undefined;
+}>;
 
 class UserServer {
   // 用户登录
-  async findOneUser(filter) {
+  async findOneUser(filter: FilterParams) {
     try {
       const user = await User.findOne(filter);
       return user;
