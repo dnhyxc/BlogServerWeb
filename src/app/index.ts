@@ -2,6 +2,7 @@ import Koa, { DefaultContext, DefaultState } from "Koa";
 import koaBody from "koa-body";
 import router from "../router";
 import connectMongodb from "../db";
+import errorHandler from "../utils";
 
 const app: Koa<DefaultState, DefaultContext> = new Koa();
 
@@ -12,5 +13,7 @@ connectMongodb();
 app.use(koaBody());
 
 app.use(router.routes()).use(router.allowedMethods());
+
+app.on("error", errorHandler);
 
 export default app;

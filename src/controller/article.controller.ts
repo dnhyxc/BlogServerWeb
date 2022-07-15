@@ -1,10 +1,8 @@
-import articleServer from "../service/article.service";
-
-const { findArticles, addArticles } = articleServer;
+import { findArticles, addArticles } from "../service";
 
 class ArticleController {
   // 创建文章
-  async createArticle(ctx, next) {
+  async createArticleCtr(ctx, next) {
     const { id } = ctx.request.query;
     // 操作数据库
     const res = await addArticles(id);
@@ -12,7 +10,7 @@ class ArticleController {
     ctx.body = res;
   }
   // 获取文章列表
-  async getArticleList(ctx, next) {
+  async getArticleListCtr(ctx, next) {
     const { id } = ctx.request.query;
     // 操作数据库
     const res = await findArticles(id);

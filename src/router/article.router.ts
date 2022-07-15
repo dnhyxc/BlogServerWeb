@@ -3,12 +3,12 @@ import articleController from "../controller/article.controller";
 
 const router = new Router({ prefix: "/article" });
 
-const { getArticleList, createArticle } = articleController;
+const { getArticleListCtr, createArticleCtr } = articleController;
 
 // 创建文章
-router.post("/create", createArticle);
+router.post("/create", createArticleCtr);
 
 // 获取文章
-router.get("/list", getArticleList);
+router.get("/list", getArticleListCtr);
 
 module.exports = router;

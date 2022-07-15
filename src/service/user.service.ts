@@ -1,53 +1,39 @@
 import { User } from "../models";
 
 class UserServer {
+  // 用户登录
+  async findOneUser(filter) {
+    try {
+      const user = await User.findOne(filter);
+      return user;
+    } catch (error) {
+      console.error("findOneUser", error);
+      throw new Error(error as any);
+    }
+  }
+
   // 注册用户
-  async createUser({ username, password }) {
-    const user = await User.findOne({ username });
-    if (!username || !password) {
-      return {
-        code: 1001,
-        msg: "用户名或密码不能为空",
-      };
-    }
-    if (user?.username === username) {
-      return {
-        code: 1002,
-        msg: "当前用户名已存在",
-      };
-    }
-    const res = await User.create({ username, password });
-    if (res.id) {
-      return {
-        code: 200,
-        msg: "注册成功",
-        id: res.id,
-      };
-    } else {
-      return {
-        code: 1003,
-        msg: "注册失败",
-        id: res.id,
-      };
+  async createUserServer({ username, password }) {
+    try {
+      const res = await User.create({ username, password });
+      return res;
+    } catch (error) {
+      console.error("createUserServer", error);
+      throw new Error(error as any);
     }
   }
 
   // 用户登录
-  async findUser({ username, password }) {
+  async loginServer({ username, password }) {
     const filter = {
       $and: [{ username }, { password }],
     };
-    const user = await User.findOne(filter);
-    if (user?.id) {
-      return {
-        code: 200,
-        msg: "登录成功",
-      };
-    } else {
-      return {
-        code: 1004,
-        msg: "登录失败",
-      };
+    try {
+      const user = await new UserServer().findOneUser(filter);
+      return user;
+    } catch (error) {
+      console.error("loginServer", error);
+      throw new Error(error as any);
     }
   }
 }
