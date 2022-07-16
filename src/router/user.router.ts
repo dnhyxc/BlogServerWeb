@@ -7,7 +7,7 @@ import {
   verifyLogin,
 } from "../middleware";
 
-const router = new Router({ prefix: "/user" });
+const router = new Router({ prefix: "/api" });
 
 // 注册接口
 router.post(

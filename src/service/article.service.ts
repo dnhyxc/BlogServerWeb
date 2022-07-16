@@ -9,8 +9,13 @@ class articleServer {
   async findArticles(id) {
     // 写入数据库
     return {
-      id,
-      list: ["文章1", "文章2", "文章3"],
+      code: 200,
+      success: true,
+      message: "获取列表成功",
+      data: {
+        id,
+        list: ["文章1", "文章2", "文章3"],
+      },
     };
   }
 }

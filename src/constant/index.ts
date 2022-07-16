@@ -1,44 +1,54 @@
 // 操作数据库报错统一错误提示
 const databaseError = {
   code: "10000",
+  success: false,
   message: "数据库错误",
-  result: "",
+  data: "",
 };
 
 const userFormateError = {
   code: "10001",
+  success: false,
   message: "用户名或密码不能为空",
-  result: "",
+  data: "",
 };
 
 const userAlreadyExited = {
   code: "10002",
+  success: false,
   message: "用户已存在",
-  result: "",
+  data: "",
 };
 
 const userRegisterError = {
   code: "10003",
+  success: false,
   message: "用户注册错误",
-  result: "",
+  data: "",
 };
 
 const userLoginError = {
   code: "10004",
+  success: false,
   message: "用户登录错误",
-  result: "",
+  data: "",
 };
 
 const userNotFind = {
-  code: "10006",
+  code: "10005",
+  success: false,
   message: "用户不存在",
-  result: "",
+  data: "",
 };
 
 const userPwdError = {
-  code: "10005",
+  code: "10006",
+  success: false,
   message: "密码错误",
-  result: "",
+  data: "",
+  err: {
+    status: 401,
+  },
 };
 
 export {

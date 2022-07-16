@@ -1,7 +1,7 @@
 import Router from "koa-router";
 import articleController from "../controller/article.controller";
 
-const router = new Router({ prefix: "/article" });
+const router = new Router({ prefix: "/api" });
 
 const { getArticleListCtr, createArticleCtr } = articleController;
 

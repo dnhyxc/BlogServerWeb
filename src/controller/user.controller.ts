@@ -1,5 +1,5 @@
 import { createUserServer } from "../service";
-import { userRegisterError, databaseError } from "../constant";
+import { databaseError } from "../constant";
 
 class UserController {
   async registerCtr(ctx, next) {
@@ -8,8 +8,9 @@ class UserController {
       const res = await createUserServer({ username, password });
       ctx.body = {
         code: 200,
-        msg: "注册成功",
-        id: res?.id,
+        message: "注册成功",
+        success: true,
+        data: res?.id,
       };
     } catch (error) {
       ctx.app.emit("error", databaseError, ctx);
@@ -20,8 +21,9 @@ class UserController {
     const { username } = ctx.request.body;
     ctx.body = {
       code: 200,
+      success: true,
       message: "登录成功",
-      result: username,
+      data: username,
     };
   }
 }
