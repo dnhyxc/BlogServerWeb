@@ -1,5 +1,5 @@
-import { createUserServer, loginServer } from "../service";
-import { userRegisterError, userLoginError } from "../constant";
+import { createUserServer } from "../service";
+import { userRegisterError, databaseError } from "../constant";
 
 class UserController {
   async registerCtr(ctx, next) {
@@ -12,22 +12,17 @@ class UserController {
         id: res?.id,
       };
     } catch (error) {
-      ctx.app.emit("error", userRegisterError, ctx);
+      ctx.app.emit("error", databaseError, ctx);
     }
   }
 
   async loginCtr(ctx, next) {
-    const { username, password } = ctx.request.body;
-    try {
-      const res = await loginServer({ username, password });
-      ctx.body = {
-        code: 200,
-        message: "登录成功",
-        result: res?.id,
-      };
-    } catch (error) {
-      ctx.app.emit("error", userLoginError, ctx);
-    }
+    const { username } = ctx.request.body;
+    ctx.body = {
+      code: 200,
+      message: "登录成功",
+      result: username,
+    };
   }
 }
 

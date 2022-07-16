@@ -28,20 +28,6 @@ class UserServer {
       throw new Error(error as any);
     }
   }
-
-  // 用户登录
-  async loginServer({ username, password }) {
-    const filter = {
-      $and: [{ username }, { password }],
-    };
-    try {
-      const user = await new UserServer().findOneUser(filter);
-      return user;
-    } catch (error) {
-      console.error("loginServer", error);
-      throw new Error(error as any);
-    }
-  }
 }
 
 export default new UserServer();

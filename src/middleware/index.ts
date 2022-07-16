@@ -1,3 +1,8 @@
-import { userValidator, verifyUser } from "./user.middleware";
+import {
+  userValidator,
+  verifyUser,
+  bcryptPassword,
+  verifyLogin,
+} from "./user.middleware";
 
-export { userValidator, verifyUser };
+export { userValidator, verifyUser, bcryptPassword, verifyLogin };
