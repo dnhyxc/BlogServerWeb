@@ -46,9 +46,6 @@ const userPwdError = {
   success: false,
   message: "密码错误",
   data: "",
-  err: {
-    status: 401,
-  },
 };
 
 export {
