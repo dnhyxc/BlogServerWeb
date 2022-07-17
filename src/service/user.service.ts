@@ -6,11 +6,17 @@ type FilterParams = FilterQuery<{
   password?: string | undefined;
 }>;
 
+interface UserParams {
+  username: string;
+  password: string;
+  id: number;
+}
+
 class UserServer {
   // 用户登录
   async findOneUser(filter: FilterParams) {
     try {
-      const user = await User.findOne(filter);
+      const user: any = await User.findOne(filter);
       return user;
     } catch (error) {
       console.error("findOneUser", error);

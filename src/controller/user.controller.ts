@@ -1,5 +1,8 @@
-import { createUserServer } from "../service";
+import jwt from "jsonwebtoken";
+import { createUserServer, findOneUser } from "../service";
 import { databaseError } from "../constant";
+
+import { JWT_SECRET } from "../config";
 
 class UserController {
   async registerCtr(ctx, next) {
@@ -19,12 +22,20 @@ class UserController {
 
   async loginCtr(ctx, next) {
     const { username } = ctx.request.body;
-    ctx.body = {
-      code: 200,
-      success: true,
-      message: "登录成功",
-      data: username,
-    };
+
+    // 1. 获取用户信息（在token的playload中，记录id，username）
+    try {
+      const { password, ...props } = (await findOneUser({ username })) || {};
+      console.log(password);
+      ctx.body = {
+        code: 200,
+        success: true,
+        message: "登录成功",
+        data: {
+          token: jwt.sign(props, JWT_SECRET, { expiresIn: "1d" }),
+        },
+      };
+    } catch (error) {}
   }
 }
 

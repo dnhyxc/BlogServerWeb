@@ -17,7 +17,7 @@ const errorHandler = (err, ctx) => {
       status = 200;
       break;
     case "10006":
-      status = 409;
+      status = 401;
       break;
 
     default:
