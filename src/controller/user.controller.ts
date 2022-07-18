@@ -26,7 +26,6 @@ class UserController {
     // 1. 获取用户信息（在token的playload中，记录id，username）
     try {
       const { password, ...props } = (await findOneUser({ username })) || {};
-      console.log(password);
       ctx.body = {
         code: 200,
         success: true,
@@ -35,7 +34,15 @@ class UserController {
           token: jwt.sign(props, JWT_SECRET, { expiresIn: "1d" }),
         },
       };
-    } catch (error) {}
+    } catch (error) {
+      ctx.app.emit("error", databaseError, ctx);
+    }
+  }
+
+  async updateInfoCtr(ctx, next) {
+    const { username, password } = ctx.request.body;
+    console.log(username, password);
+    ctx.body = "修改成功" + username;
   }
 }
 

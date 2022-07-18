@@ -1,10 +1,11 @@
 import Router from "koa-router";
-import { registerCtr, loginCtr } from "../controller";
+import { registerCtr, loginCtr, updateInfoCtr } from "../controller";
 import {
   userValidator,
   verifyUser,
   bcryptPassword,
   verifyLogin,
+  auth,
 } from "../middleware";
 
 const router = new Router({ prefix: "/api" });
@@ -20,5 +21,8 @@ router.post(
 
 // 登录接口
 router.post("/login", userValidator, verifyLogin, loginCtr);
+
+// 修改密码接口
+router.put("/updateInfo", auth, updateInfoCtr);
 
 module.exports = router;

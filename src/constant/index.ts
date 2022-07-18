@@ -48,6 +48,20 @@ const userPwdError = {
   data: "",
 };
 
+const TokenExpiredError = {
+  code: "10101",
+  success: false,
+  message: "token已过期",
+  data: "",
+};
+
+const JsonWebTokenError = {
+  code: "10102",
+  success: false,
+  message: "无效的token",
+  data: "",
+};
+
 export {
   databaseError,
   userFormateError,
@@ -56,4 +70,6 @@ export {
   userLoginError,
   userPwdError,
   userNotFind,
+  TokenExpiredError,
+  JsonWebTokenError,
 };

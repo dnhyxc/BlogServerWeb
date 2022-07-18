@@ -27,10 +27,11 @@ const verifyUser = async (ctx, next) => {
       ctx.app.emit("error", userAlreadyExited, ctx);
       return;
     }
-    await next();
   } catch (error) {
     ctx.app.emit("error", databaseError, ctx);
   }
+
+  await next();
 };
 
 // 密码加密
@@ -39,6 +40,7 @@ const bcryptPassword = async (ctx, next) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
   ctx.request.body.password = hash;
+  
   await next();
 };
 
@@ -58,11 +60,11 @@ const verifyLogin = async (ctx, next) => {
       ctx.app.emit("error", userPwdError, ctx);
       return;
     }
-
-    await next();
   } catch (error) {
     ctx.app.emit("error", databaseError, ctx);
   }
+
+  await next();
 };
 
 export { userValidator, verifyUser, bcryptPassword, verifyLogin };
