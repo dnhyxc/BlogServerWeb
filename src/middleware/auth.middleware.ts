@@ -13,7 +13,7 @@ const auth = async (ctx, next) => {
       username,
       password,
     };
-    ctx.status.user = user;
+    ctx.state.user = user;
   } catch (error: any) {
     switch (error.name) {
       case "TokenExpiredError":

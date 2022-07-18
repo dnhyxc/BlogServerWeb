@@ -6,11 +6,10 @@ type FilterParams = FilterQuery<{
   password?: string | undefined;
 }>;
 
-interface UserParams {
-  username: string;
-  password: string;
-  id: number;
-}
+type newUserInfo = FilterQuery<{
+  username?: string;
+  password?: string;
+}>;
 
 class UserServer {
   // 用户登录
@@ -24,11 +23,34 @@ class UserServer {
     }
   }
 
+  // 根据id查找用户
+  async findUserById(id: string) {
+    try {
+      const user: any = await User.findById(id);
+      return user;
+    } catch (error) {
+      console.error("findUserById", error);
+      throw new Error(error as any);
+    }
+  }
+
+  // 用户登录
+  async updateUser(filter: FilterParams, newUserInfo: newUserInfo) {
+    try {
+      const res: any = await User.updateOne(filter, {
+        $set: newUserInfo,
+      });
+      return res.modifiedCount > 0 ? true : false;
+    } catch (error) {
+      console.error("updateUser", error);
+      throw new Error(error as any);
+    }
+  }
+
   // 注册用户
   async createUserServer({ username, password }) {
     try {
-      const res = await User.create({ username, password });
-      return res;
+      return await User.create({ username, password });
     } catch (error) {
       console.error("createUserServer", error);
       throw new Error(error as any);

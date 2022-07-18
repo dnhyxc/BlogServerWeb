@@ -48,6 +48,13 @@ const userPwdError = {
   data: "",
 };
 
+const pwdNotChange = {
+  code: "10007",
+  success: false,
+  message: "密码与原来一致",
+  data: "",
+};
+
 const TokenExpiredError = {
   code: "10101",
   success: false,
@@ -70,6 +77,7 @@ export {
   userLoginError,
   userPwdError,
   userNotFind,
+  pwdNotChange,
   TokenExpiredError,
   JsonWebTokenError,
 };

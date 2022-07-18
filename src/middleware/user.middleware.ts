@@ -5,8 +5,9 @@ import {
   userAlreadyExited,
   userNotFind,
   userPwdError,
+  pwdNotChange,
 } from "../constant";
-import { findOneUser } from "../service";
+import { findOneUser, findUserById } from "../service";
 
 // 校验用户名或密码是否为空
 const userValidator = async (ctx, next) => {
@@ -40,7 +41,7 @@ const bcryptPassword = async (ctx, next) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
   ctx.request.body.password = hash;
-  
+
   await next();
 };
 
@@ -54,7 +55,6 @@ const verifyLogin = async (ctx, next) => {
       ctx.app.emit("error", userNotFind, ctx);
       return;
     }
-
     const checkPwd = bcrypt.compareSync(password, user.password);
     if (!checkPwd) {
       ctx.app.emit("error", userPwdError, ctx);
@@ -67,4 +67,22 @@ const verifyLogin = async (ctx, next) => {
   await next();
 };
 
-export { userValidator, verifyUser, bcryptPassword, verifyLogin };
+const verifyUpdateInfo = async (ctx, next) => {
+  const { username, password } = ctx.request.body;
+  const { id } = ctx.state.user;
+  const user = await findUserById(id);
+  const checkPwd = bcrypt.compareSync(password, user.password);
+  if (checkPwd) {
+    return ctx.app.emit("error", pwdNotChange, ctx);
+  }
+
+  await next();
+};
+
+export {
+  userValidator,
+  verifyUser,
+  bcryptPassword,
+  verifyLogin,
+  verifyUpdateInfo,
+};

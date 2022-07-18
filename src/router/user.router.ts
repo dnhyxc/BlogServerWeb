@@ -6,6 +6,7 @@ import {
   bcryptPassword,
   verifyLogin,
   auth,
+  verifyUpdateInfo,
 } from "../middleware";
 
 const router = new Router({ prefix: "/api" });
@@ -23,6 +24,13 @@ router.post(
 router.post("/login", userValidator, verifyLogin, loginCtr);
 
 // 修改密码接口
-router.put("/updateInfo", auth, updateInfoCtr);
+router.put(
+  "/updateInfo",
+  auth,
+  userValidator,
+  verifyUpdateInfo,
+  bcryptPassword,
+  updateInfoCtr
+);
 
 module.exports = router;

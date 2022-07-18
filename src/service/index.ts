@@ -1,7 +1,14 @@
 import userService from "./user.service";
 import articleService from "./article.service";
 
-const { findOneUser, createUserServer } = userService;
+const { findOneUser, findUserById, createUserServer, updateUser } = userService;
 const { addArticles, findArticles } = articleService;
 
-export { findOneUser, createUserServer, addArticles, findArticles };
+export {
+  findOneUser,
+  findUserById,
+  createUserServer,
+  addArticles,
+  findArticles,
+  updateUser,
+};
