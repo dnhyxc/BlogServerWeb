@@ -27,7 +27,7 @@ router.post("/login", userValidator, verifyLogin, loginCtr);
 router.put(
   "/updateInfo",
   auth,
-  userValidator,
+  verifyUser,
   verifyUpdateInfo,
   bcryptPassword,
   updateInfoCtr

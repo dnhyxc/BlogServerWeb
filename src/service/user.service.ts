@@ -34,10 +34,11 @@ class UserServer {
     }
   }
 
-  // 用户登录
+  // 修改用户信息
   async updateUser(filter: FilterParams, newUserInfo: newUserInfo) {
+    const id = { _id: filter.id };
     try {
-      const res: any = await User.updateOne(filter, {
+      const res: any = await User.updateOne(id, {
         $set: newUserInfo,
       });
       return res.modifiedCount > 0 ? true : false;
