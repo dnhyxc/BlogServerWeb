@@ -3,9 +3,10 @@ import { JWT_SECRET } from "../config";
 import { TokenExpiredError, JsonWebTokenError } from "../constant";
 
 const auth = async (ctx, next) => {
-  const { authorization } = ctx.request.header;
-  const token = authorization.replace("Bearer ", "");
+  console.log(ctx, "----------");
   try {
+    const { authorization } = ctx.request.header;
+    const token = authorization.replace("Bearer ", "");
     const userInfo = jwt.verify(token, JWT_SECRET);
     const { _id, username, password } = userInfo._doc;
     const user = {
