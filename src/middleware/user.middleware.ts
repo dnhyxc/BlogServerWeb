@@ -21,13 +21,16 @@ const userValidator = async (ctx, next) => {
 // 校验用户名是否存在
 const verifyUser = async (ctx, next) => {
   const { username } = ctx.request.body;
-  const filter = { username };
-  try {
-    if (await findOneUser(filter)) {
-      return ctx.app.emit("error", userAlreadyExited, ctx);
+
+  if (username) {
+    try {
+      const filter = { username };
+      if (await findOneUser(filter)) {
+        return ctx.app.emit("error", userAlreadyExited, ctx);
+      }
+    } catch (error) {
+      ctx.app.emit("error", databaseError, ctx);
     }
-  } catch (error) {
-    ctx.app.emit("error", databaseError, ctx);
   }
 
   await next();

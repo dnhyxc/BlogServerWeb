@@ -1,14 +1,13 @@
 import Router from "koa-router";
-import articleController from "../controller/article.controller";
+import { getArticleListCtr, createArticleCtr } from "../controller";
+import { auth } from "../middleware";
 
 const router = new Router({ prefix: "/api" });
 
-const { getArticleListCtr, createArticleCtr } = articleController;
-
 // 创建文章
-router.post("/create", createArticleCtr);
+router.post("/create", auth, createArticleCtr);
 
 // 获取文章
-router.get("/list", getArticleListCtr);
+router.get("/list", auth, getArticleListCtr);
 
 module.exports = router;

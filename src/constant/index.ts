@@ -69,6 +69,13 @@ const JsonWebTokenError = {
   data: "",
 };
 
+const fileUploadError = {
+  code: "10201",
+  success: false,
+  message: "文件上传失败",
+  data: "",
+};
+
 export {
   databaseError,
   userFormateError,
@@ -80,4 +87,5 @@ export {
   pwdNotChange,
   TokenExpiredError,
   JsonWebTokenError,
+  fileUploadError,
 };

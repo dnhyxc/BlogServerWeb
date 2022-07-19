@@ -3,7 +3,6 @@ import { JWT_SECRET } from "../config";
 import { TokenExpiredError, JsonWebTokenError } from "../constant";
 
 const auth = async (ctx, next) => {
-  console.log(ctx, "----------");
   try {
     const { authorization } = ctx.request.header;
     const token = authorization.replace("Bearer ", "");

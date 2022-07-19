@@ -17,11 +17,15 @@ const errorHandler = (err, ctx) => {
       status = 200;
       break;
     case "10006":
+      status = 409;
+    case "10101":
+      status = 401;
+    case "10102":
       status = 401;
       break;
 
     default:
-      status = 200;
+      status = 500;
       break;
   }
   ctx.status = status;
