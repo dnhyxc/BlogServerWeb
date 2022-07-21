@@ -1,22 +1,55 @@
+import { FilterQuery } from "mongoose";
+import { Article } from "../models";
+
 class articleServer {
-  // 新增文章
-  async addArticles(id) {
-    // 写入数据库
-    return "文章添加成功" + id;
+  // 创建文章
+  async createArticle({
+    title,
+    content,
+    classify,
+    tag,
+    coverImage,
+    abstract,
+    createTime,
+  }) {
+    try {
+      return await Article.create({
+        title,
+        content,
+        classify,
+        tag,
+        coverImage,
+        abstract,
+        createTime,
+      });
+    } catch (error) {
+      console.error("createArticle", error);
+      throw new Error(error as any);
+    }
   }
 
   // 获取文章列表
-  async findArticles(id) {
-    // 写入数据库
-    return {
-      code: 200,
-      success: true,
-      message: "获取列表成功",
-      data: {
-        id,
-        list: ["文章1", "文章2", "文章3"],
-      },
-    };
+  async findArticles({ pageNo, pageSize, filter }) {
+    try {
+      const res = Article.find(filter)
+        .skip((pageNo - 1) * pageSize)
+        .limit(pageSize);
+      return res;
+    } catch (error) {
+      console.error("findArticles", error);
+      throw new Error(error as any);
+    }
+  }
+
+  // 根据文章id查找文章详情
+  async findArticleById(id) {
+    try {
+      const article: any = await Article.findById(id);
+      return article;
+    } catch (error) {
+      console.error("findUserById", error);
+      throw new Error(error as any);
+    }
   }
 }
 

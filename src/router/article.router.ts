@@ -1,13 +1,20 @@
 import Router from "koa-router";
-import { getArticleListCtr, createArticleCtr } from "../controller";
+import {
+  getArticleListCtr,
+  createArticleCtr,
+  getArticleByIdCtr,
+} from "../controller";
 import { auth } from "../middleware";
 
 const router = new Router({ prefix: "/api" });
 
 // 创建文章
-router.post("/create", auth, createArticleCtr);
+router.post("/createArticle", auth, createArticleCtr);
 
 // 获取文章
-router.get("/list", auth, getArticleListCtr);
+router.post("/articleList", auth, getArticleListCtr);
+
+// 获取文章详情
+router.post("/articleDetail", auth, getArticleByIdCtr);
 
 module.exports = router;
