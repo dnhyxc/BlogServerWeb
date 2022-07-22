@@ -3,6 +3,7 @@ import {
   getArticleListCtr,
   createArticleCtr,
   getArticleByIdCtr,
+  updateArticleCtr,
 } from "../controller";
 import { auth } from "../middleware";
 
@@ -16,5 +17,8 @@ router.post("/articleList", auth, getArticleListCtr);
 
 // 获取文章详情
 router.post("/articleDetail", auth, getArticleByIdCtr);
+
+// 评论接口
+router.post("/comment", auth, updateArticleCtr);
 
 module.exports = router;

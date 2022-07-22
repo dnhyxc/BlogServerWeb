@@ -47,7 +47,22 @@ class articleServer {
       const article: any = await Article.findById(id);
       return article;
     } catch (error) {
-      console.error("findUserById", error);
+      console.error("findArticleById", error);
+      throw new Error(error as any);
+    }
+  }
+
+  // 根据文章id查找文章详情
+  async updateArticle({ id: _id, params }) {
+    console.log(params, "params");
+    const id = { _id };
+    try {
+      const article: any = await Article.updateOne(id, {
+        $set: { comments: params },
+      });
+      return article;
+    } catch (error) {
+      console.error("updateArticle", error);
       throw new Error(error as any);
     }
   }

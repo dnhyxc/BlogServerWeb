@@ -1,4 +1,10 @@
-import { findArticles, createArticle, findArticleById } from "../service";
+import {
+  findArticles,
+  createArticle,
+  findArticleById,
+  updateArticle,
+  findCommentById,
+} from "../service";
 import { databaseError } from "../constant";
 class ArticleController {
   // 创建文章
@@ -50,20 +56,25 @@ class ArticleController {
   }
   // 根据文章id获取详情
   async getArticleByIdCtr(ctx, next) {
-    const { id } = ctx.request.body;
     try {
+      const { id } = ctx.request.body;
       const res = await findArticleById(id);
+      const comment = await findCommentById(id);
+      console.log(comment, "comment");
       if (res) {
-        const detail = {
-          id: res.id,
-          title: res.title,
-          content: res.content,
-          classify: res.classify,
-          tag: res.tag,
-          coverImage: res.coverImage,
-          abstract: res.abstract,
-          createTime: res.createTime,
-        };
+        const detail = { ...res._doc };
+        detail.id = detail._id;
+        delete detail._id;
+        delete detail.__v;
+        const comments = comment.map((i) => {
+          const temp = { ...i._doc };
+          temp.id = temp._id;
+          delete temp._id;
+          delete temp.__v;
+          return temp;
+        });
+
+        detail.comments = comments;
 
         ctx.body = {
           code: 200,
@@ -76,6 +87,29 @@ class ArticleController {
       console.error("updateInfoCtr", error);
       ctx.app.emit("error", databaseError, ctx);
     }
+  }
+  // 更新文章内容
+  async updateArticleCtr(ctx, next) {
+    try {
+      const { id, ...params } = ctx.request.body;
+      const res = await updateArticle({ id, params });
+      console.log(res, "res");
+      ctx.body = {
+        code: 200,
+        success: true,
+        message: "操作成功",
+        data: {},
+      };
+    } catch (error) {
+      console.error("updateArticleCtr", error);
+      ctx.app.emit("error", databaseError, ctx);
+    }
+  }
+  // 文章评论
+  async articleCommentCtr(ctx, next) {
+    try {
+      const { id } = ctx.request.body;
+    } catch (error) {}
   }
 }
 

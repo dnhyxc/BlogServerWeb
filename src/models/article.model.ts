@@ -20,6 +20,33 @@ const ArticleSchema = new mongoose.Schema({
   coverImage: String,
   abstract: String,
   createTime: Number,
+  createUserId: String,
+  comments: [
+    {
+      userId: String,
+      username: String,
+      avatarUrl: String,
+      date: Number,
+      content: String,
+      fromUserId: String,
+      likeCount: Number,
+      replyCount: Number,
+      replyList: [
+        {
+          userId: String,
+          username: String,
+          avatarUrl: String,
+          date: Number,
+          fromUserId: Number,
+          fromUsername: String,
+          formContent: String,
+          replyContent: String,
+          likeCount: Number,
+          replyCount: Number,
+        },
+      ],
+    },
+  ],
 });
 
 const Article = mongoose.model("articles", ArticleSchema);
