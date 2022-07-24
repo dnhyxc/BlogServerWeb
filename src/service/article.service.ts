@@ -2,25 +2,9 @@ import { Article } from "../models";
 
 class articleServer {
   // 创建文章
-  async createArticle({
-    title,
-    content,
-    classify,
-    tag,
-    coverImage,
-    abstract,
-    createTime,
-  }) {
+  async createArticle({ ...params }) {
     try {
-      return await Article.create({
-        title,
-        content,
-        classify,
-        tag,
-        coverImage,
-        abstract,
-        createTime,
-      });
+      return await Article.create(params);
     } catch (error) {
       console.error("createArticle", error);
       throw new Error(error as any);
@@ -32,7 +16,8 @@ class articleServer {
     try {
       const res = Article.find(filter)
         .skip((pageNo - 1) * pageSize)
-        .limit(pageSize);
+        .limit(pageSize)
+        .sort({ createTime: -1 });
       return res;
     } catch (error) {
       console.error("findArticles", error);

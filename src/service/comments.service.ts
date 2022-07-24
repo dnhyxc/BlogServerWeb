@@ -102,6 +102,32 @@ class commentServer {
 
     return comment;
   }
+  // 删除评论
+  async deleteComment(commentId, fromCommentId) {
+    const filter = fromCommentId
+      ? {
+          "replyList._id": fromCommentId, // 选择数组replyList中某个对象中的_id属性
+        }
+      : { _id: commentId };
+
+    const comment: any = await Comments.updateOne(
+      {
+        $and: [filter],
+      },
+      // $inc：自增自减运算符，传入正值为自增，负值为自减
+      {
+        $set: fromCommentId
+          ? {
+              "replyList.$.isDelete": true,
+            }
+          : {
+              isDelete: true,
+            },
+      }
+    );
+
+    return comment;
+  }
 }
 
 export default new commentServer();

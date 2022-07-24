@@ -3,6 +3,7 @@ import {
   createCommentsCtr,
   findCommentsById,
   giveLikeCtr,
+  deleteCommentCtr,
 } from "../controller";
 import { auth } from "../middleware";
 
@@ -14,5 +15,7 @@ router.post("/comments", auth, createCommentsCtr);
 router.post("/getCommentList", auth, findCommentsById);
 // 点赞
 router.post("/giveLike", auth, giveLikeCtr);
+// 删除评论
+router.post("/deleteComment", auth, deleteCommentCtr);
 
 module.exports = router;

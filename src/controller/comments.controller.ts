@@ -4,6 +4,7 @@ import {
   findCommentById,
   giveLike,
   createLike,
+  deleteComment,
 } from "../service";
 import { databaseError } from "../constant";
 
@@ -37,12 +38,14 @@ class CommentsController {
       // 操作数据库
       const res = await findCommentById(id);
       if (res) {
-        const comments = res.map((i) => {
+        const filterDelComments = res.filter((i) => !i.isDelete);
+        const comments = filterDelComments.map((i) => {
           const comment = { ...i._doc };
           comment.commentId = comment._id;
           delete comment._id;
           delete comment.__v;
-          const newList = comment.replyList.map((j) => {
+          const filterReplyList = comment.replyList.filter((i) => !i.isDelete);
+          const newList = filterReplyList.map((j) => {
             const item = { ...j._doc };
             item.commentId = j._id;
             delete item._id;
@@ -57,7 +60,7 @@ class CommentsController {
         ctx.body = {
           code: 200,
           success: true,
-          message: "操作成功",
+          message: "获取评论成功",
           data: comments,
         };
       }
@@ -79,7 +82,24 @@ class CommentsController {
         code: 200,
         success: true,
         message: "点赞成功",
-        data: "success",
+        data: commentId,
+      };
+    } catch (error) {
+      console.error("createCommentsCtr", error);
+      ctx.app.emit("error", databaseError, ctx);
+    }
+  }
+  // 删除评论
+  async deleteCommentCtr(ctx, next) {
+    try {
+      const { commentId, fromCommentId } = ctx.request.body;
+      // 判断当前用户是否对当前评论点过赞
+      await deleteComment(commentId, fromCommentId);
+      ctx.body = {
+        code: 200,
+        success: true,
+        message: "删除成功",
+        data: commentId,
       };
     } catch (error) {
       console.error("createCommentsCtr", error);

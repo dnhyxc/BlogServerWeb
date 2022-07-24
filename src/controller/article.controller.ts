@@ -3,7 +3,6 @@ import {
   createArticle,
   findArticleById,
   updateArticle,
-  findCommentById,
 } from "../service";
 import { databaseError } from "../constant";
 class ArticleController {
@@ -35,12 +34,13 @@ class ArticleController {
       const res: any = await findArticles({ pageNo, pageSize, filter });
       // 返回结果
       if (res) {
-        const list = res.map((i) => ({
-          id: i.id,
-          title: i.title,
-          abstract: i.abstract,
-          createTime: i.createTime,
-        }));
+        const list = res.map((i) => {
+          const article = { ...i._doc };
+          article.id = article._id;
+          delete article._id;
+          delete article.__v;
+          return article;
+        });
 
         ctx.body = {
           code: 200,
@@ -59,21 +59,11 @@ class ArticleController {
     try {
       const { id } = ctx.request.body;
       const res = await findArticleById(id);
-      const comment = await findCommentById(id);
       if (res) {
         const detail = { ...res._doc };
         detail.id = detail._id;
         delete detail._id;
         delete detail.__v;
-        const comments = comment.map((i) => {
-          const temp = { ...i._doc };
-          temp.id = temp._id;
-          delete temp._id;
-          delete temp.__v;
-          return temp;
-        });
-
-        detail.comments = comments;
 
         ctx.body = {
           code: 200,
@@ -91,7 +81,7 @@ class ArticleController {
   async updateArticleCtr(ctx, next) {
     try {
       const { id, ...params } = ctx.request.body;
-      const res = await updateArticle({ id, params });
+      await updateArticle({ id, params });
       ctx.body = {
         code: 200,
         success: true,
@@ -102,12 +92,6 @@ class ArticleController {
       console.error("updateArticleCtr", error);
       ctx.app.emit("error", databaseError, ctx);
     }
-  }
-  // 文章评论
-  async articleCommentCtr(ctx, next) {
-    try {
-      const { id } = ctx.request.body;
-    } catch (error) {}
   }
 }
 
