@@ -11,7 +11,7 @@ const {
   updateArticleCtr,
 } = articleController;
 const { uploadFileCtr } = uploadController;
-const { createCommentsCtr, findCommentsById } = commentsController;
+const { createCommentsCtr, findCommentsById, giveLikeCtr } = commentsController;
 
 export {
   registerCtr,
@@ -24,4 +24,5 @@ export {
   updateArticleCtr,
   createCommentsCtr,
   findCommentsById,
+  giveLikeCtr,
 };

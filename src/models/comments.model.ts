@@ -10,18 +10,29 @@ const CommentsSchema = new mongoose.Schema({
   fromUserId: String,
   likeCount: Number,
   replyCount: Number,
+  isLike: Boolean,
+  likeComments: {
+    userId: [String],
+    commentIds: [String],
+  },
   replyList: [
     {
       userId: String,
       username: String,
       avatarUrl: String,
       date: Number,
-      fromUserId: Number,
+      fromUserId: String,
       fromUsername: String,
       formContent: String,
-      replyContent: String,
+      content: String,
       likeCount: Number,
+      isLike: Boolean,
       replyCount: Number,
+      fromCommentId: String,
+      likeComments: {
+        userId: [String],
+        commentIds: [String],
+      },
     },
   ],
 });

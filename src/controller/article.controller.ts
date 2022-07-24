@@ -60,7 +60,6 @@ class ArticleController {
       const { id } = ctx.request.body;
       const res = await findArticleById(id);
       const comment = await findCommentById(id);
-      console.log(comment, "comment");
       if (res) {
         const detail = { ...res._doc };
         detail.id = detail._id;
@@ -93,7 +92,6 @@ class ArticleController {
     try {
       const { id, ...params } = ctx.request.body;
       const res = await updateArticle({ id, params });
-      console.log(res, "res");
       ctx.body = {
         code: 200,
         success: true,

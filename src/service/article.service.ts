@@ -54,7 +54,6 @@ class articleServer {
 
   // 根据文章id查找文章详情
   async updateArticle({ id: _id, params }) {
-    console.log(params, "params");
     const id = { _id };
     try {
       const article: any = await Article.updateOne(id, {

@@ -6,7 +6,8 @@ const { findOneUser, findUserById, createUserServer, updateUser } = userService;
 const { createArticle, findArticles, findArticleById, updateArticle } =
   articleService;
 
-const { createComments, findCommentById } = commentsService;
+const { createComments, findCommentById, updateComments, giveLike } =
+  commentsService;
 
 export {
   findOneUser,
@@ -19,4 +20,6 @@ export {
   updateArticle,
   createComments,
   findCommentById,
+  updateComments,
+  giveLike,
 };
