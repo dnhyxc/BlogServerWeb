@@ -21,7 +21,7 @@ const errorHandler = (err, ctx) => {
     case "10101":
       status = 401;
     case "10102":
-      status = 401;
+      status = 409;
       break;
 
     default:

@@ -28,7 +28,7 @@ class UserController {
       const { password, ...props } = (await findOneUser({ username })) || {};
       const { _id: id, username: user_name, is_admin } = props._doc || {};
       ctx.body = {
-        code: 200,
+        code: 201,
         success: true,
         message: "登录成功",
         data: {

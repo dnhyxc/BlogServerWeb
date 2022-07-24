@@ -13,10 +13,10 @@ const router = new Router({ prefix: "/api" });
 router.post("/createArticle", auth, createArticleCtr);
 
 // 获取文章
-router.post("/articleList", auth, getArticleListCtr);
+router.post("/articleList", getArticleListCtr);
 
 // 获取文章详情
-router.post("/articleDetail", auth, getArticleByIdCtr);
+router.post("/articleDetail", getArticleByIdCtr);
 
 // 评论接口
 router.post("/comment", auth, updateArticleCtr);

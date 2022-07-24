@@ -9,10 +9,10 @@ import { auth } from "../middleware";
 
 const router = new Router({ prefix: "/api" });
 
-// 创建文章
+// 创建评论
 router.post("/comments", auth, createCommentsCtr);
 // 获取评论
-router.post("/getCommentList", auth, findCommentsById);
+router.post("/getCommentList", findCommentsById);
 // 点赞
 router.post("/giveLike", auth, giveLikeCtr);
 // 删除评论
