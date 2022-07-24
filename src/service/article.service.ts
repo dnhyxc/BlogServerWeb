@@ -1,4 +1,3 @@
-import { FilterQuery } from "mongoose";
 import { Article } from "../models";
 
 class articleServer {

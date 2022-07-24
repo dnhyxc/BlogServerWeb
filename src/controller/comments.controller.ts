@@ -3,13 +3,13 @@ import {
   updateComments,
   findCommentById,
   giveLike,
+  createLike,
 } from "../service";
 import { databaseError } from "../constant";
 
 class CommentsController {
   // 创建文章
   async createCommentsCtr(ctx, next) {
-    const { id: userId } = ctx.state.user;
     try {
       const { commentId, ...params } = ctx.request.body;
       if (commentId) {
@@ -69,9 +69,11 @@ class CommentsController {
   // 点赞
   async giveLikeCtr(ctx, next) {
     try {
-      const { commentId, fromCommentId, status } = ctx.request.body;
-      const { id: userId } = ctx.state.user;
-      await giveLike(commentId, fromCommentId, status, userId);
+      const { commentId, fromCommentId, userId } = ctx.request.body;
+      // 判断当前用户是否对当前评论点过赞
+      const likeStatus = await createLike(commentId, userId);
+      // 对评论详情进行更改，将点赞数加入详情
+      await giveLike(commentId, fromCommentId, likeStatus);
       // 返回结果
       ctx.body = {
         code: 200,

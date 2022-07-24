@@ -1,4 +1,4 @@
-import { Comments, UserInfo } from "../models";
+import { Comments } from "../models";
 
 class commentServer {
   // 创建评论
@@ -72,9 +72,7 @@ class commentServer {
     }
   }
   // 点赞
-  async giveLike(commentId, fromCommentId, status, userId) {
-    console.log(commentId, fromCommentId, status, userId);
-
+  async giveLike(commentId, fromCommentId, status) {
     const filter = fromCommentId
       ? {
           "replyList._id": fromCommentId, // 选择数组replyList中某个对象中的_id属性
@@ -101,35 +99,6 @@ class commentServer {
             },
       }
     );
-
-    // const findComment = await Comments.findOne({
-    //   _id: commentId,
-    // });
-    // console.log(findComment, "findComment");
-
-    // if (findComment) {
-    //   // console.log(findComment.userIds, "idsss");
-    //   // if (findComment.userIds.includes(userId)) return;
-    //   // findComment.userIds.push(userId);
-    //   // Comments.create(findComment);
-    //   // console.log(findComment.userIds, "idss>>>>s");
-
-    //   if (status) {
-    //     findComment.userIds.push(userId);
-    //     findComment.isLike = false;
-    //   } else {
-    //     findComment.userIds = findComment.userIds.filter((i) => i !== userId);
-    //     findComment.isLike = true;
-    //   }
-
-    //   if (findComment.userIds.includes(userId)) {
-    //     findComment.likeCount = findComment?.likeCount! + 1;
-    //   } else {
-    //     findComment.likeCount = findComment?.likeCount! - 1;
-    //   }
-
-    //   Comments.create(findComment);
-    // }
 
     return comment;
   }
