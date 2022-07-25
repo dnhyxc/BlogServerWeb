@@ -3,13 +3,9 @@ import { Comments } from "../models";
 class commentServer {
   // 创建评论
   async createComments({ params }) {
-    const likeCount = 0;
-    const isLike = false;
     try {
       const comment: any = await Comments.create({
         ...params,
-        likeCount,
-        isLike,
       });
       return comment;
     } catch (error) {
@@ -17,6 +13,7 @@ class commentServer {
       throw new Error(error as any);
     }
   }
+
   // 根据文章id查找评论
   async findCommentById(articleId) {
     try {
@@ -27,10 +24,8 @@ class commentServer {
       throw new Error(error as any);
     }
   }
-  // 根据文章id查找评论
+  // 回复评论
   async updateComments(commentId, params) {
-    const likeCount = 0;
-    const isLike = false;
     try {
       const { fromCommentId } = params;
 
@@ -51,7 +46,7 @@ class commentServer {
           $push: {
             replyList: {
               // ...params, // 不适用$each包一下sort不会生效
-              $each: [{ ...params, likeCount, isLike }], // $each 向replyList插入多条
+              $each: [{ ...params }], // $each 向replyList插入多条
               // $sort: { date: 1 }, // 正序排列
             },
           },

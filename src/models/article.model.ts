@@ -22,6 +22,7 @@ const ArticleSchema = new mongoose.Schema({
   createTime: Number,
   createUserId: String,
   authorId: String,
+  isDelete: String,
 });
 
 const Article = mongoose.model("articles", ArticleSchema);

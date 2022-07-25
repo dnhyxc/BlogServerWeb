@@ -11,6 +11,23 @@ class articleServer {
     }
   }
 
+  // 删除文章
+  async deleteArticles({ articleId }) {
+    try {
+      return await Article.updateOne(
+        { _id: articleId },
+        {
+          $set: {
+            isDelete: true,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("createArticle", error);
+      throw new Error(error as any);
+    }
+  }
+
   // 获取文章列表
   async findArticles({ pageNo, pageSize, filter }) {
     try {

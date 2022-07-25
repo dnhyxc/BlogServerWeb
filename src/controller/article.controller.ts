@@ -2,7 +2,7 @@ import {
   findArticles,
   createArticle,
   findArticleById,
-  updateArticle,
+  deleteArticles,
 } from "../service";
 import { databaseError } from "../constant";
 class ArticleController {
@@ -27,6 +27,24 @@ class ArticleController {
     }
   }
   // 获取文章列表
+  async deleteArticleCtr(ctx, next) {
+    try {
+      const { articleId } = ctx.request.body;
+      // 操作数据库
+      await deleteArticles({ articleId });
+      // 返回结果
+      ctx.body = {
+        code: 200,
+        success: true,
+        message: "删除成功",
+        data: articleId,
+      };
+    } catch (error) {
+      console.error("getArticleListCtr", error);
+      ctx.app.emit("error", databaseError, ctx);
+    }
+  }
+  // 获取文章列表
   async getArticleListCtr(ctx, next) {
     try {
       const { pageNo, pageSize, filter } = ctx.request.body;
@@ -34,7 +52,8 @@ class ArticleController {
       const res: any = await findArticles({ pageNo, pageSize, filter });
       // 返回结果
       if (res) {
-        const list = res.map((i) => {
+        const filterArticles = res.filter((i) => !i.isDelete);
+        const list = filterArticles.map((i) => {
           const article = { ...i._doc };
           article.id = article._id;
           delete article._id;
@@ -74,22 +93,6 @@ class ArticleController {
       }
     } catch (error) {
       console.error("updateInfoCtr", error);
-      ctx.app.emit("error", databaseError, ctx);
-    }
-  }
-  // 更新文章内容
-  async updateArticleCtr(ctx, next) {
-    try {
-      const { id, ...params } = ctx.request.body;
-      await updateArticle({ id, params });
-      ctx.body = {
-        code: 200,
-        success: true,
-        message: "操作成功",
-        data: {},
-      };
-    } catch (error) {
-      console.error("updateArticleCtr", error);
       ctx.app.emit("error", databaseError, ctx);
     }
   }

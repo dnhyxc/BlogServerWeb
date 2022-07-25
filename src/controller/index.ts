@@ -8,7 +8,7 @@ const {
   createArticleCtr,
   getArticleListCtr,
   getArticleByIdCtr,
-  updateArticleCtr,
+  deleteArticleCtr,
 } = articleController;
 const { uploadFileCtr } = uploadController;
 const { createCommentsCtr, findCommentsById, giveLikeCtr, deleteCommentCtr } =
@@ -22,9 +22,9 @@ export {
   createArticleCtr,
   getArticleListCtr,
   getArticleByIdCtr,
-  updateArticleCtr,
   createCommentsCtr,
   findCommentsById,
   giveLikeCtr,
   deleteCommentCtr,
+  deleteArticleCtr,
 };

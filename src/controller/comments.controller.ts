@@ -9,7 +9,7 @@ import {
 import { databaseError } from "../constant";
 
 class CommentsController {
-  // 创建文章
+  // 创建评论
   async createCommentsCtr(ctx, next) {
     try {
       const { commentId, ...params } = ctx.request.body;

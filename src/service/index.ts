@@ -4,8 +4,13 @@ import commentsService from "./comments.service";
 import likeService from "./like.service";
 
 const { findOneUser, findUserById, createUserServer, updateUser } = userService;
-const { createArticle, findArticles, findArticleById, updateArticle } =
-  articleService;
+const {
+  createArticle,
+  findArticles,
+  findArticleById,
+  updateArticle,
+  deleteArticles,
+} = articleService;
 
 const {
   createComments,
@@ -32,4 +37,5 @@ export {
   giveLike,
   createLike,
   deleteComment,
+  deleteArticles,
 };
