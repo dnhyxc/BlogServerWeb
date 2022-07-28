@@ -3,6 +3,8 @@ import {
   createArticle,
   findArticleById,
   deleteArticles,
+  likeArticle,
+  checkLikeArticle,
 } from "../service";
 import { databaseError } from "../constant";
 class ArticleController {
@@ -95,6 +97,19 @@ class ArticleController {
       console.error("updateInfoCtr", error);
       ctx.app.emit("error", databaseError, ctx);
     }
+  }
+
+  // 文章点赞
+  async likeArticleCtr(ctx, next) {
+    const { id, userId } = ctx.request.body;
+    const likeStatus = await checkLikeArticle(id, userId);
+    await likeArticle({ id, likeStatus });
+    ctx.body = {
+      code: 200,
+      success: true,
+      message: "为文章点赞成功",
+      data: id,
+    };
   }
 }
 

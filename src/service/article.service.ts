@@ -66,6 +66,25 @@ class articleServer {
       throw new Error(error as any);
     }
   }
+
+  // 根据文章id查找文章详情
+  async likeArticle({ id: _id, likeStatus }) {
+    try {
+      const likeArticle: any = await Article.updateOne(
+        { _id },
+        {
+          $inc: { likeCount: likeStatus ? -1 : 1 },
+          $set: {
+            isLike: likeStatus ? false : true,
+          },
+        }
+      );
+      return likeArticle;
+    } catch (error) {
+      console.error("likeArticle", error);
+      throw new Error(error as any);
+    }
+  }
 }
 
 export default new articleServer();

@@ -1,31 +1,31 @@
-import { Like } from "../models";
+import { likeArticle } from "../models";
 
-class likeServer {
+class likeArticleServer {
   // 创建评论
-  async createLike(commentId, userId) {
+  async checkLikeArticle(articleId, userId) {
     // 查找
-    const find = await Like.findOne({
+    const find = await likeArticle.findOne({
       userId: userId,
-      likeCommentId: commentId,
+      articleId,
     });
 
     // 如果find有值说明点赞过，需要删除，否则就是没点过赞，需要创建，同时点赞数要加一
     if (find) {
       // 创建
-      await Like.deleteOne({
+      await likeArticle.deleteOne({
         userId: userId,
-        likeCommentId: commentId,
+        articleId,
       });
       return true;
     } else {
       // 创建
-      await Like.create({
+      await likeArticle.create({
         userId: userId,
-        likeCommentId: commentId,
+        articleId,
       });
       return false;
     }
   }
 }
 
-export default new likeServer();
+export default new likeArticleServer();

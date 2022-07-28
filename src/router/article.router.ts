@@ -4,6 +4,7 @@ import {
   createArticleCtr,
   getArticleByIdCtr,
   deleteArticleCtr,
+  likeArticleCtr,
 } from "../controller";
 import { auth } from "../middleware";
 
@@ -20,5 +21,8 @@ router.post("/articleList", getArticleListCtr);
 
 // 获取文章详情
 router.post("/articleDetail", getArticleByIdCtr);
+
+// 文章点赞
+router.post("/likeArticle", likeArticleCtr);
 
 module.exports = router;

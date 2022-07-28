@@ -23,6 +23,8 @@ const ArticleSchema = new mongoose.Schema({
   createUserId: String,
   authorId: String,
   isDelete: String,
+  isLike: Boolean,
+  likeCount: Number,
 });
 
 const Article = mongoose.model("articles", ArticleSchema);

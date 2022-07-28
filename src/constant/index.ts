@@ -59,14 +59,14 @@ const TokenExpiredError = {
   code: "10101",
   success: false,
   message: "token已过期",
-  data: "",
+  data: new Date().valueOf(),
 };
 
 const JsonWebTokenError = {
   code: "10102",
   success: false,
   message: "无效的token",
-  data: "",
+  data: new Date().valueOf(),
 };
 
 const fileUploadError = {
