@@ -49,9 +49,9 @@ class ArticleController {
   // 获取文章列表
   async getArticleListCtr(ctx, next) {
     try {
-      const { pageNo, pageSize, filter } = ctx.request.body;
+      const { pageNo, pageSize, filter, userId } = ctx.request.body;
       // 操作数据库
-      const res: any = await findArticles({ pageNo, pageSize, filter });
+      const res: any = await findArticles({ pageNo, pageSize, filter, userId });
       // 返回结果
       if (res) {
         const filterArticles = res.filter((i) => !i.isDelete);

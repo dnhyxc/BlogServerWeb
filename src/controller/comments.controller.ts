@@ -34,9 +34,9 @@ class CommentsController {
   // 根据文章id查找对应的评论
   async findCommentsById(ctx, next) {
     try {
-      const { id } = ctx.request.body;
+      const { id, userId } = ctx.request.body;
       // 操作数据库
-      const res = await findCommentById(id);
+      const res = await findCommentById(id, userId);
       if (res) {
         const filterDelComments = res.filter((i) => !i.isDelete);
         const comments = filterDelComments.map((i) => {

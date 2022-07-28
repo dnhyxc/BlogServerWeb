@@ -1,4 +1,4 @@
-import { Comments } from "../models";
+import { Comments, Like } from "../models";
 
 class commentServer {
   // 创建评论
@@ -14,16 +14,82 @@ class commentServer {
     }
   }
 
-  // 根据文章id查找评论
-  async findCommentById(articleId) {
-    try {
-      const comment: any = await Comments.find({ articleId });
-      return comment;
-    } catch (error) {
-      console.error("createComments", error);
-      throw new Error(error as any);
-    }
+  // 查询用户是否点赞
+  static async checkLikeStatus(userId, articleId) {
+    const likes = await Like.find({ userId });
+
+    const likeFilter = likes.map((i) => i.likeCommentId);
+
+    await Comments.updateMany(
+      { _id: { $nin: likeFilter } },
+      {
+        $set: {
+          isLike: false,
+        },
+      }
+    );
+
+    await Comments.updateMany(
+      { _id: { $in: likeFilter } },
+      {
+        $set: {
+          isLike: true,
+        },
+      }
+    );
+
+    // https://www.cnblogs.com/zhongchengyi/p/12162792.html
+    const res = await Comments.updateMany(
+      { "replyList._id": { $in: likeFilter } },
+      {
+        $set: {
+          "replyList.$[idx].isLike": true,
+        },
+      },
+      {
+        arrayFilters: [
+          {
+            idx: { $in: { likeFilter } },
+          },
+        ],
+      }
+    );
+
+    await Comments.updateMany(
+      { "replyList._id": { $nin: likeFilter } },
+      {
+        $set: {
+          "replyList.$[idx].isLike": false,
+        },
+      },
+      {
+        arrayFilters: [
+          {
+            idx: { $nin: { likeFilter } },
+          },
+        ],
+      }
+    );
+
+    // console.log(res, "res");
+
+    // await Comments.updateMany(
+    //   { "replyList._id": { $in: likeFilter } },
+    //   {
+    //     $set: {
+    //       "replyList.$.isLike": true,
+    //     },
+    //   }
+    // );
   }
+
+  // 根据文章id查找评论
+  async findCommentById(articleId, userId) {
+    await commentServer.checkLikeStatus(userId, articleId);
+    const comment: any = await Comments.find({ articleId });
+    return comment;
+  }
+
   // 回复评论
   async updateComments(commentId, params) {
     try {

@@ -1,4 +1,4 @@
-import { Article } from "../models";
+import { Article, LikeArticle } from "../models";
 
 class articleServer {
   // 创建文章
@@ -28,18 +28,40 @@ class articleServer {
     }
   }
 
+  // 查询用户是否点赞
+  async checkLikeStatus(userId) {
+    const likes = await LikeArticle.find({ userId });
+
+    const likeFilter = likes.map((i) => i.articleId);
+
+    await Article.updateMany(
+      { _id: { $nin: likeFilter } },
+      {
+        $set: {
+          isLike: false,
+        },
+      }
+    );
+
+    await Article.updateMany(
+      { _id: { $in: likeFilter } },
+      {
+        $set: {
+          isLike: true,
+        },
+      }
+    );
+  }
+
   // 获取文章列表
-  async findArticles({ pageNo, pageSize, filter }) {
-    try {
-      const res = Article.find(filter)
-        .skip((pageNo - 1) * pageSize)
-        .limit(pageSize)
-        .sort({ createTime: -1 });
-      return res;
-    } catch (error) {
-      console.error("findArticles", error);
-      throw new Error(error as any);
-    }
+  async findArticles({ pageNo, pageSize, filter, userId }) {
+    await new articleServer().checkLikeStatus(userId);
+
+    const res = await Article.find(filter)
+      .skip((pageNo - 1) * pageSize)
+      .limit(pageSize)
+      .sort({ createTime: -1 });
+    return res;
   }
 
   // 根据文章id查找文章详情

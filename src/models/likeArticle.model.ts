@@ -5,6 +5,6 @@ const likeArticleSchema = new mongoose.Schema({
   articleId: String,
 });
 
-const likeArticle = mongoose.model("likeArticles", likeArticleSchema);
+const LikeArticle = mongoose.model("likeArticles", likeArticleSchema);
 
-export default likeArticle;
+export default LikeArticle;
