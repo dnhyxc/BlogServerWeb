@@ -12,13 +12,8 @@ class CommentsController {
   // 创建评论
   async createCommentsCtr(ctx, next) {
     try {
-      const { commentId, ...params } = ctx.request.body;
-      if (commentId) {
-        await updateComments(commentId, params);
-      } else {
-        // 操作数据库
-        await createComments({ params });
-      }
+      const { ...params } = ctx.request.body;
+      await createComments({ params });
       // 返回结果
       ctx.body = {
         code: 200,
@@ -44,15 +39,6 @@ class CommentsController {
           comment.commentId = comment._id;
           delete comment._id;
           delete comment.__v;
-          const filterReplyList = comment.replyList.filter((i) => !i.isDelete);
-          const newList = filterReplyList.map((j) => {
-            const item = { ...j._doc };
-            item.commentId = j._id;
-            delete item._id;
-            delete item.__v;
-            return item;
-          });
-          comment.replyList = newList;
           return comment;
         });
 

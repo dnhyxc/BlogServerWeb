@@ -49,38 +49,16 @@ class commentServer {
   // 回复评论
   async updateComments(commentId, params) {
     try {
-      const { fromCommentId } = params;
+      const filter = { articleId: params.articleId };
 
-      const filter = fromCommentId
-        ? {
-            articleId: params.articleId,
-            "replyList._id": fromCommentId,
-          }
-        : { _id: commentId, articleId: params.articleId };
-
-      const comment: any = await Comments.updateOne(
-        {
-          $and: [filter],
+      const comment: any = await Comments.updateOne(filter, {
+        $set: {
+          fromUserId: params.fromUserId,
+          fromCommentId: params.fromCommentId,
+          fromUsername: params.fromUsername,
+          formContent: params.formContent,
         },
-        // 向查找到的document中的replyList数组中插入一条评论
-        // 注意：如果要使用排序，$sort必须与$each一起使用才会生效
-        {
-          $push: {
-            replyList: {
-              // ...params, // 不适用$each包一下sort不会生效
-              $each: [{ ...params }], // $each 向replyList插入多条
-              // $sort: { date: 1 }, // 正序排列
-            },
-          },
-        },
-        {
-          $set: {
-            "replyList.$.fromUserId": params.fromUserId,
-            "replyList.$.fromUsername": params.fromUsername,
-            "replyList.$.formContent": params.formContent,
-          },
-        }
-      );
+      });
 
       return comment;
     } catch (error) {
@@ -90,30 +68,16 @@ class commentServer {
   }
   // 点赞
   async giveLike(commentId, fromCommentId, status) {
-    const filter = fromCommentId
-      ? {
-          "replyList._id": fromCommentId, // 选择数组replyList中某个对象中的_id属性
-        }
-      : { _id: commentId };
+    const filter = { _id: commentId };
 
     const comment: any = await Comments.updateOne(
-      {
-        $and: [filter],
-      },
+      filter,
       // $inc：自增自减运算符，传入正值为自增，负值为自减
       {
-        $inc: fromCommentId
-          ? {
-              "replyList.$.likeCount": status ? -1 : 1, // replyList.$.likeCount：表示选择数组replyList中某个对象的likeCount属性
-            }
-          : { likeCount: status ? -1 : 1 },
-        $set: fromCommentId
-          ? {
-              "replyList.$.isLike": status ? false : true,
-            }
-          : {
-              isLike: status ? false : true,
-            },
+        $inc: { likeCount: status ? -1 : 1 },
+        $set: {
+          isLike: status ? false : true,
+        },
       }
     );
 
@@ -121,25 +85,14 @@ class commentServer {
   }
   // 删除评论
   async deleteComment(commentId, fromCommentId) {
-    const filter = fromCommentId
-      ? {
-          "replyList._id": fromCommentId, // 选择数组replyList中某个对象中的_id属性
-        }
-      : { _id: commentId };
+    const filter = { _id: commentId };
 
     const comment: any = await Comments.updateOne(
+      filter,
       {
-        $and: [filter],
-      },
-      // $inc：自增自减运算符，传入正值为自增，负值为自减
-      {
-        $set: fromCommentId
-          ? {
-              "replyList.$.isDelete": true,
-            }
-          : {
-              isDelete: true,
-            },
+        $set: {
+          isDelete: true,
+        },
       }
     );
 
