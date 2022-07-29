@@ -37,50 +37,6 @@ class commentServer {
         },
       }
     );
-
-    // https://www.cnblogs.com/zhongchengyi/p/12162792.html
-    const res = await Comments.updateMany(
-      { "replyList._id": { $in: likeFilter } },
-      {
-        $set: {
-          "replyList.$[idx].isLike": true,
-        },
-      },
-      {
-        arrayFilters: [
-          {
-            idx: { $in: { likeFilter } },
-          },
-        ],
-      }
-    );
-
-    await Comments.updateMany(
-      { "replyList._id": { $nin: likeFilter } },
-      {
-        $set: {
-          "replyList.$[idx].isLike": false,
-        },
-      },
-      {
-        arrayFilters: [
-          {
-            idx: { $nin: { likeFilter } },
-          },
-        ],
-      }
-    );
-
-    // console.log(res, "res");
-
-    // await Comments.updateMany(
-    //   { "replyList._id": { $in: likeFilter } },
-    //   {
-    //     $set: {
-    //       "replyList.$.isLike": true,
-    //     },
-    //   }
-    // );
   }
 
   // 根据文章id查找评论
