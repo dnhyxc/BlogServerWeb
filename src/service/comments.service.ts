@@ -14,11 +14,61 @@ class commentServer {
     }
   }
 
+  // 根据userId更新里层点赞状态
+  static async updateReplyList(id, replyList) {
+    await Comments.updateOne(
+      { _id: id },
+      {
+        $set: {
+          replyList: replyList,
+        },
+      }
+    );
+  }
+
   // 查询用户是否点赞
   static async checkLikeStatus(userId, articleId) {
     const likes = await Like.find({ userId });
 
     const likeFilter = likes.map((i) => i.likeCommentId);
+
+    const filterIn: any = await Comments.find({
+      "replyList._id": { $in: likeFilter },
+    });
+
+    const filterNin: any = await Comments.find({
+      "replyList._id": { $nin: likeFilter },
+    });
+
+    // 根据userId查询到的commentId更新里层点赞状态，filterIn（在likeFilter中的comment）
+    filterIn.forEach((i) => {
+      if (i.replyList.length > 0) {
+        const res = i.replyList.map((j) => {
+          if (likeFilter.includes(j.id)) {
+            j.isLike = true;
+          } else {
+            j.isLike = false;
+          }
+          return j;
+        });
+        commentServer.updateReplyList(i.id, res);
+      }
+    });
+
+    // 根据userId查询到的commentId更新里层点赞状态，filterNin（不在likeFilter中的comment）
+    filterNin.forEach((i) => {
+      if (i.replyList.length > 0) {
+        const res = i.replyList.map((j) => {
+          if (likeFilter.includes(j.id)) {
+            j.isLike = true;
+          } else {
+            j.isLike = false;
+          }
+          return j;
+        });
+        commentServer.updateReplyList(i.id, res);
+      }
+    });
 
     await Comments.updateMany(
       { _id: { $nin: likeFilter } },
