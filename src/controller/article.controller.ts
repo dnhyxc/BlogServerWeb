@@ -5,6 +5,7 @@ import {
   deleteArticles,
   likeArticle,
   checkLikeArticle,
+  updateArticle,
 } from "../service";
 import { databaseError } from "../constant";
 class ArticleController {
@@ -28,6 +29,27 @@ class ArticleController {
       ctx.app.emit("error", databaseError, ctx);
     }
   }
+  // 创建文章
+  async updateArticleCtr(ctx, next) {
+    try {
+      const params = ctx.request.body;
+      // 操作数据库
+      await updateArticle({ ...params });
+      // 返回结果
+      ctx.body = {
+        code: 200,
+        success: true,
+        message: "文章更新成功",
+        data: {
+          id: params.articleId,
+        },
+      };
+    } catch (error) {
+      console.error("registerCtr", error);
+      ctx.app.emit("error", databaseError, ctx);
+    }
+  }
+
   // 获取文章列表
   async deleteArticleCtr(ctx, next) {
     try {

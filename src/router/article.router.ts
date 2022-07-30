@@ -5,6 +5,7 @@ import {
   getArticleByIdCtr,
   deleteArticleCtr,
   likeArticleCtr,
+  updateArticleCtr,
 } from "../controller";
 import { auth } from "../middleware";
 
@@ -14,6 +15,9 @@ const router = new Router({ prefix: "/api" });
 router.post("/createArticle", auth, createArticleCtr);
 
 // 创建文章
+router.post("/updateArticle", auth, updateArticleCtr);
+
+// 删除文章
 router.post("/deleteArticle", auth, deleteArticleCtr);
 
 // 获取文章

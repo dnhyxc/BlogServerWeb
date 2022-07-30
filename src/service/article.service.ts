@@ -11,6 +11,16 @@ class articleServer {
     }
   }
 
+  // 根据文章id查找文章详情
+  async updateArticle({ articleId: _id, ...params }) {
+    try {
+      await Article.updateOne({ _id }, { $set: params });
+    } catch (error) {
+      console.error("updateArticle", error);
+      throw new Error(error as any);
+    }
+  }
+
   // 删除文章
   async deleteArticles({ articleId }) {
     try {
@@ -71,20 +81,6 @@ class articleServer {
       return article;
     } catch (error) {
       console.error("findArticleById", error);
-      throw new Error(error as any);
-    }
-  }
-
-  // 根据文章id查找文章详情
-  async updateArticle({ id: _id, params }) {
-    const id = { _id };
-    try {
-      const article: any = await Article.updateOne(id, {
-        $set: { comments: params },
-      });
-      return article;
-    } catch (error) {
-      console.error("updateArticle", error);
       throw new Error(error as any);
     }
   }

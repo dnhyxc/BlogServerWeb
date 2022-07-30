@@ -10,6 +10,7 @@ const {
   getArticleByIdCtr,
   deleteArticleCtr,
   likeArticleCtr,
+  updateArticleCtr,
 } = articleController;
 const { uploadFileCtr } = uploadController;
 const { createCommentsCtr, findCommentsById, giveLikeCtr, deleteCommentCtr } =
@@ -29,4 +30,5 @@ export {
   deleteCommentCtr,
   deleteArticleCtr,
   likeArticleCtr,
+  updateArticleCtr,
 };
