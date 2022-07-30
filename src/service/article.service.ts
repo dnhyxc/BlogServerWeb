@@ -64,10 +64,22 @@ class articleServer {
   }
 
   // 获取文章列表
-  async findArticles({ pageNo, pageSize, filter, userId }) {
+  async findArticles({ pageNo = 1, pageSize = 20, filter, userId }) {
+    // 不区分大小写
+    const reg = new RegExp(filter, "i");
+
     await new articleServer().checkLikeStatus(userId);
 
-    const res = await Article.find(filter)
+    const filterKey = {
+      $or: [
+        { title: { $regex: reg } },
+        { tag: { $regex: reg } },
+        { classify: { $regex: reg } },
+        { authorId: { $regex: reg } },
+      ],
+    };
+
+    const res = await Article.find(filterKey)
       .skip((pageNo - 1) * pageSize)
       .limit(pageSize)
       .sort({ createTime: -1 });

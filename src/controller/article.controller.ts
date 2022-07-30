@@ -97,6 +97,40 @@ class ArticleController {
       ctx.app.emit("error", databaseError, ctx);
     }
   }
+  // 获取文章列表
+  async searchArticleCtr(ctx, next) {
+    try {
+      const { pageNo, pageSize, keyword, userId } = ctx.request.body;
+      // 操作数据库
+      const res: any = await findArticles({
+        pageNo,
+        pageSize,
+        filter: keyword,
+        userId,
+      });
+      // 返回结果
+      if (res) {
+        const filterArticles = res.filter((i) => !i.isDelete);
+        const list = filterArticles.map((i) => {
+          const article = { ...i._doc };
+          article.id = article._id;
+          delete article._id;
+          delete article.__v;
+          return article;
+        });
+
+        ctx.body = {
+          code: 200,
+          success: true,
+          message: "获取文章列表成功",
+          data: list,
+        };
+      }
+    } catch (error) {
+      console.error("getArticleListCtr", error);
+      ctx.app.emit("error", databaseError, ctx);
+    }
+  }
   // 根据文章id获取详情
   async getArticleByIdCtr(ctx, next) {
     try {
