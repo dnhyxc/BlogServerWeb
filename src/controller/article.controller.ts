@@ -29,6 +29,7 @@ class ArticleController {
       ctx.app.emit("error", databaseError, ctx);
     }
   }
+  
   // 创建文章
   async updateArticleCtr(ctx, next) {
     try {
@@ -68,6 +69,7 @@ class ArticleController {
       ctx.app.emit("error", databaseError, ctx);
     }
   }
+
   // 获取文章列表
   async getArticleListCtr(ctx, next) {
     try {
@@ -97,6 +99,7 @@ class ArticleController {
       ctx.app.emit("error", databaseError, ctx);
     }
   }
+
   // 获取文章列表
   async searchArticleCtr(ctx, next) {
     try {
@@ -127,10 +130,11 @@ class ArticleController {
         };
       }
     } catch (error) {
-      console.error("getArticleListCtr", error);
+      console.error("searchArticleCtr", error);
       ctx.app.emit("error", databaseError, ctx);
     }
   }
+
   // 根据文章id获取详情
   async getArticleByIdCtr(ctx, next) {
     try {
@@ -150,7 +154,7 @@ class ArticleController {
         };
       }
     } catch (error) {
-      console.error("updateInfoCtr", error);
+      console.error("getArticleByIdCtr", error);
       ctx.app.emit("error", databaseError, ctx);
     }
   }

@@ -22,7 +22,7 @@ const ArticleSchema = new mongoose.Schema({
   createTime: Number,
   createUserId: String,
   authorId: String,
-  isDelete: String,
+  isDelete: Boolean,
   isLike: Boolean,
   likeCount: Number,
 });

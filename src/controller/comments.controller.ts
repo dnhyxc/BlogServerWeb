@@ -65,7 +65,7 @@ class CommentsController {
         };
       }
     } catch (error) {
-      console.error("findCommentById", error);
+      console.error("findCommentsById", error);
       ctx.app.emit("error", databaseError, ctx);
     }
   }
@@ -85,7 +85,7 @@ class CommentsController {
         data: commentId,
       };
     } catch (error) {
-      console.error("createCommentsCtr", error);
+      console.error("giveLikeCtr", error);
       ctx.app.emit("error", databaseError, ctx);
     }
   }
@@ -102,7 +102,7 @@ class CommentsController {
         data: commentId,
       };
     } catch (error) {
-      console.error("createCommentsCtr", error);
+      console.error("deleteCommentCtr", error);
       ctx.app.emit("error", databaseError, ctx);
     }
   }

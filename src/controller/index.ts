@@ -2,6 +2,7 @@ import userController from "./user.controller";
 import articleController from "./article.controller";
 import uploadController from "./upload.controller";
 import commentsController from "./comments.controller";
+import classifyController from "./classify.controller";
 
 const { registerCtr, loginCtr, updateInfoCtr } = userController;
 const {
@@ -16,6 +17,8 @@ const {
 const { uploadFileCtr } = uploadController;
 const { createCommentsCtr, findCommentsById, giveLikeCtr, deleteCommentCtr } =
   commentsController;
+
+const { getClassifyListCtr } = classifyController;
 
 export {
   registerCtr,
@@ -33,4 +36,5 @@ export {
   likeArticleCtr,
   updateArticleCtr,
   searchArticleCtr,
+  getClassifyListCtr,
 };
