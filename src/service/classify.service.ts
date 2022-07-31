@@ -61,6 +61,34 @@ class classifyServer {
     ]);
     return list;
   }
+
+  // 获取标签
+  async getTimelineList({ pageNo = 1, pageSize = 20 }) {
+    const list = await Article.aggregate([
+      {
+        $match: {
+          isDelete: { $nin: ["true", true] },
+        },
+      },
+      // {
+      //   $project: {
+      //     date: { $dateToString: { format: "%Y-%m-%d", date: "$createTime" } },
+      //   },
+      // },
+      {
+        $group: {
+          _id: "$createTime",
+          count: { $sum: 1 },
+          articles: { $addToSet: { title: "$title", id: "$_id" } },
+        },
+      },
+      {
+        $project: {},
+      },
+      { $sort: { createTime: -1 } },
+    ]);
+    return list;
+  }
 }
 
 export default new classifyServer();

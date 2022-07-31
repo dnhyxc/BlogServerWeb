@@ -1,4 +1,4 @@
-import { getClassifyList, getTagList } from "../service";
+import { getClassifyList, getTagList, getTimelineList } from "../service";
 import { databaseError } from "../constant";
 
 class classifyController {
@@ -20,7 +20,7 @@ class classifyController {
       ctx.app.emit("error", databaseError, ctx);
     }
   }
-  // 创建文章
+  // 获取文章标签列表
   async getTagListCtr(ctx, next) {
     const { pageNo, pageSize } = ctx.request.body;
     try {
@@ -35,6 +35,24 @@ class classifyController {
       };
     } catch (error) {
       console.error("getTagListCtr", error);
+      ctx.app.emit("error", databaseError, ctx);
+    }
+  }
+  // 获取文章时间轴
+  async getTimelineListCtr(ctx, next) {
+    const { pageNo, pageSize } = ctx.request.body;
+    try {
+      // 操作数据库
+      const res = await getTimelineList({ pageNo, pageSize });
+      // 返回结果
+      ctx.body = {
+        code: 200,
+        success: true,
+        message: "获取时间轴列表成功",
+        data: res,
+      };
+    } catch (error) {
+      console.error("getTimelineListCtr", error);
       ctx.app.emit("error", databaseError, ctx);
     }
   }
