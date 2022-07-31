@@ -18,7 +18,7 @@ const { uploadFileCtr } = uploadController;
 const { createCommentsCtr, findCommentsById, giveLikeCtr, deleteCommentCtr } =
   commentsController;
 
-const { getClassifyListCtr } = classifyController;
+const { getClassifyListCtr, getTagListCtr } = classifyController;
 
 export {
   registerCtr,
@@ -37,4 +37,5 @@ export {
   updateArticleCtr,
   searchArticleCtr,
   getClassifyListCtr,
+  getTagListCtr,
 };

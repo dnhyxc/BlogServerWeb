@@ -27,7 +27,7 @@ const { createLike } = likeService;
 
 const { checkLikeArticle } = likeArticleService;
 
-const { getClassifyList } = classifyService;
+const { getClassifyList, getTagList } = classifyService;
 
 export {
   findOneUser,
@@ -48,4 +48,5 @@ export {
   likeArticle,
   checkLikeArticle,
   getClassifyList,
+  getTagList,
 };
